@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {Button, Input, Container} from './index'
 
-function SignIn() {
+function SignInForm() {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
@@ -55,4 +55,4 @@ function SignIn() {
   )
 }
 
-export default SignIn
+export default SignInForm

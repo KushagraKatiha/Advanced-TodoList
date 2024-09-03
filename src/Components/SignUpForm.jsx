@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {Button, Input, Container} from './index'
 
-function SignUp() {
+function SignUpForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -46,4 +46,4 @@ function SignUp() {
   )
 }
 
-export default SignUp
+export default SignUpForm
