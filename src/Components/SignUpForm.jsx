@@ -1,19 +1,36 @@
-import React, {useState} from 'react'
-import {Button, Input, Container} from './index'
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setUser } from './userAuthSlice'; // Import the setUser action
+import { Button, Input, Container } from './index';
 
 function SignUpForm() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch(); // Set up useDispatch for dispatching actions
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setLoading(true)
-    // add your code
-    // setLoading
-    // setError
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      // Simulate an API call for sign-up (this could be a fetch/axios call to your back-end)
+      const mockApiResponse = await new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({ id: 1, email, name: 'New User' });
+        }, 1000);
+      });
+
+      // Dispatch the setUser action with the user data
+      dispatch(setUser(mockApiResponse));
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      setError('Failed to sign up. Please try again.');
+    }
+  };
 
   return (
     <Container>
@@ -37,13 +54,13 @@ function SignUpForm() {
         <Button
           type='submit'
           disabled={loading}
-          name= {loading ? 'Loading...' : 'Sign Up'}
+          name={loading ? 'Loading...' : 'Sign Up'}
           className='mb-2'
         />
         {error && <p className='text-red-500'>{error}</p>}
       </form>
     </Container>
-  )
+  );
 }
 
-export default SignUpForm
+export default SignUpForm;

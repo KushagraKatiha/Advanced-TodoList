@@ -1,27 +1,40 @@
-import React, {useState} from 'react'
-import {Button} from './index'
+import React, { useState } from 'react';
+import { Button } from './index';
+import { useUpdateTodoMutation } from './todosApiSlice';
 
-function Todo({title, createdAt, done, pending=!done}) {
-    const [done, setDone] = useState(done)
-    const [pending, setPending] = useState(pending)
+function Todo({ id, title, createdAt, initialDone }) {
+  const [done, setDone] = useState(initialDone);
+  const [updateTodo] = useUpdateTodoMutation(); // Use the updateTodo mutation
 
-    const handleDone = () => {
-        setDone(!done)
-        setPending(!pending)
+  const handleToggle = async () => {
+    try {
+      // Toggle the local state
+      const newDoneStatus = !done;
+      setDone(newDoneStatus);
+
+      // Call the API to update the todo
+      await updateTodo({ id, updatedFields: { done: newDoneStatus } });
+    } catch (err) {
+      console.error('Failed to update todo:', err);
     }
-
-    const handlePending = () => {
-        setPending(!pending)
-        setDone(!done)
-    }
+  };
 
   return (
-    <div className='w-full flex px-4 py-1'>
-        {done ? <p className='line-through'>{title}</p> : <p>{title}</p>}
-        <p>{createdAt}</p>
-        <Button name={done ? 'pending' : 'done'} className='mb-2' onClick={done ? handlePending : handleDone}/>
+    <div className='w-full flex px-4 py-1 items-center justify-between'>
+      {/* Display the todo title with strikethrough if done */}
+      <p className={done ? 'line-through' : ''}>{title}</p>
+      
+      {/* Display the creation date */}
+      <p>{createdAt}</p>
+
+      {/* Button that toggles between 'done' and 'pending' */}
+      <Button 
+        name={done ? 'Mark as Pending' : 'Mark as Done'} 
+        className='mb-2' 
+        onClick={handleToggle} 
+      />
     </div>
-  )
+  );
 }
 
-export default Todo
+export default Todo;
