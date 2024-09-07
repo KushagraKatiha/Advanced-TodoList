@@ -6,6 +6,8 @@ import Todo from "./Todo";
 import TodoForm from "./TodoForm";
 import Navbar from "./Navbar";
 import Container from "./Container";
+import Spinner from "./Spinner";
+import TodoLogo from "./Logo/Logo";
 
 export { 
     Button, 
@@ -15,5 +17,7 @@ export {
     Todo, 
     TodoForm, 
     Navbar, 
-    Container 
+    Container,
+    Spinner,
+    TodoLogo
 };

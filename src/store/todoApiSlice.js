@@ -1,12 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const todosApi = createApi({
-  reducerPath: 'todosApi', // A unique key to store the API cache in the store
-  baseQuery: fetchBaseQuery({ baseUrl: '/api/' }), // Set the base URL for API requests
-  tagTypes: ['Todos'], // Tag type to manage cache invalidation
+  reducerPath: 'todosApi',
+  baseQuery: fetchBaseQuery({ baseUrl: '/api/' }),
+  tagTypes: ['Todos'],
   endpoints: (builder) => ({
     getTodos: builder.query({
-      query: () => 'todos', // GET all todos from /api/todos
+      query: (userId) => `todos?userId=${userId}`, // Fetch todos for a specific user
       providesTags: (result) =>
         result
           ? [
@@ -17,31 +17,31 @@ export const todosApi = createApi({
     }),
     addTodo: builder.mutation({
       query: (newTodo) => ({
-        url: 'todos', // POST to /api/todos
+        url: 'todos',
         method: 'POST',
         body: newTodo,
       }),
-      invalidatesTags: [{ type: 'Todos', id: 'LIST' }], // Invalidate list cache on add
+      invalidatesTags: [{ type: 'Todos', id: 'LIST' }],
     }),
     deleteTodo: builder.mutation({
       query: (id) => ({
-        url: `todos/${id}`, // DELETE /api/todos/:id
+        url: `todos/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, id) => [{ type: 'Todos', id }], // Invalidate specific todo cache
+      invalidatesTags: (result, error, id) => [{ type: 'Todos', id }],
     }),
     updateTodo: builder.mutation({
       query: ({ id, updatedFields }) => ({
-        url: `todos/${id}`, // PATCH /api/todos/:id
+        url: `todos/${id}`,
         method: 'PATCH',
         body: updatedFields,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Todos', id }], // Invalidate the specific updated todo
+      invalidatesTags: (result, error, { id }) => [{ type: 'Todos', id }],
     }),
   }),
 });
 
-// Export hooks for usage in function components
+// Export hooks for usage in functional components
 export const {
   useGetTodosQuery,
   useAddTodoMutation,

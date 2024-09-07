@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setUser } from './userAuthSlice'; // Import the setUser action
+import { setUser } from '../store/userAuthSilce'; // Import the setUser action
 import { Button, Input, Container } from './index';
 
 function SignUpForm() {

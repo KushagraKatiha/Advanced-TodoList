@@ -1,9 +1,14 @@
-import React from 'react'
+import React from 'react';
 
-function Button({className, onClick, name, ...props}) {
+function Button({ label, className, ...props }) {
   return (
-    <button className={`${className} px-3 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-700`} onClick={onClick} {...props}>{name}</button>
-  )
+    <button
+      className={`px-6 py-2 font-bold text-white rounded-full focus:outline-none transition transform ${className}`}
+      {...props}
+    >
+      {label}
+    </button>
+  );
 }
 
-export default Button
+export default Button;
