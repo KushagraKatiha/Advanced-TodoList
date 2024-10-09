@@ -1,60 +1,22 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setUser } from '../store/userAuthSilce'; // Import the setUser action
 import { Button, Input, Container } from './index';
 
 function SignInForm() {
   const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch(); // Set up useDispatch for dispatching actions
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-
-    try {
-      // Simulate an API call for sign-in (this could be a fetch/axios call to your back-end)
-      const mockApiResponse = await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          if (email === 'test@example.com' && password === 'password123') {
-            resolve({ id: 1, email, name });
-          } else {
-            reject('Invalid credentials');
-          }
-        }, 1000);
-      });
-
-      // Dispatch the setUser action with the user data
-      dispatch(setUser(mockApiResponse));
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      setError('Failed to sign in. Invalid credentials.');
-    }
-  };
 
   return (
     <Container>
-      <form onSubmit={handleSubmit} className='flex flex-col items-center'>
+      <form className='w-full max-w-md mx-auto bg-slate-800 p-8 rounded-lg shadow-lg'>
+        <h2 className='text-2xl font-bold text-white text-center mb-6'>Sign In</h2>
+
         <Input
           type='email'
           name='email'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder='Email'
-          className='mb-2'
-        />
-        <Input
-          type='text'
-          name='name'
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder='Name'
-          className='mb-2'
+          className='mb-4 w-full'
         />
         <Input
           type='password'
@@ -62,15 +24,14 @@ function SignInForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder='Password'
-          className='mb-2'
+          className='mb-4 w-full'
         />
+
         <Button
           type='submit'
-          disabled={loading}
-          name={loading ? 'Loading...' : 'Sign In'}
-          className='mb-2'
+          label={'Sign In'}
+          className='w-full bg-blue-500 hover:bg-blue-600 disabled:opacity-50'
         />
-        {error && <p className='text-red-500'>{error}</p>}
       </form>
     </Container>
   );

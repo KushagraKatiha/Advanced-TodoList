@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { Button } from './index';
-import { useUpdateTodoMutation } from '../store/todoApiSlice';
 
 function Todo({ id, title, createdAt, initialDone }) {
   const [done, setDone] = useState(initialDone);
   const [error, setError] = useState('');
-  const [updateTodo] = useUpdateTodoMutation(); // Use the updateTodo mutation
 
   const handleToggle = async () => {
     try {
@@ -14,8 +12,9 @@ function Todo({ id, title, createdAt, initialDone }) {
       setDone(newDoneStatus);
       setError(''); // Clear any previous error message
 
-      // Call the API to update the todo
-      await updateTodo({ id, updatedFields: { done: newDoneStatus } }).unwrap();
+      // Simulate an API call to update the todo status
+      // await updateTodoStatus(id, newDoneStatus);
+
     } catch (err) {
       console.error('Failed to update todo:', err);
       setError('Failed to update the status. Please try again.');
@@ -26,22 +25,26 @@ function Todo({ id, title, createdAt, initialDone }) {
   };
 
   return (
-    <div className='w-full flex px-4 py-1 items-center justify-between'>
-      {/* Display the todo title with strikethrough if done */}
-      <p className={done ? 'line-through' : ''}>{title}</p>
+    <div className='flex w-full items-center justify-between bg-slate-800 px-4 py-2 rounded-lg shadow-lg mb-4'>
+      {/* Todo title with dynamic styling */}
+      <p className={`flex-1 ${done ? 'line-through text-gray-400' : 'text-white'} text-lg`}>
+        {title}
+      </p>
       
       {/* Display the creation date */}
-      <p>{createdAt}</p>
+      <p className='text-gray-400 text-sm'>
+        {new Date(createdAt).toLocaleDateString()}
+      </p>
 
-      {/* Button that toggles between 'done' and 'pending' */}
-      <Button 
-        name={done ? 'Mark as Pending' : 'Mark as Done'} 
-        className='mb-2' 
-        onClick={handleToggle} 
+      {/* Button to toggle status */}
+      <Button
+        label={done ? 'Mark as Pending' : 'Mark as Done'}
+        className={`ml-4 ${done ? 'bg-yellow-500' : 'bg-green-500'}`}
+        onClick={handleToggle}
       />
 
-      {/* Display error message if any */}
-      {error && <p className="text-red-500">{error}</p>}
+      {/* Error message display */}
+      {error && <p className="text-red-500 mt-2">{error}</p>}
     </div>
   );
 }

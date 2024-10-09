@@ -6,42 +6,29 @@ import { Button, Input, Container } from './index';
 function SignUpForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch(); // Set up useDispatch for dispatching actions
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-
-    try {
-      // Simulate an API call for sign-up (this could be a fetch/axios call to your back-end)
-      const mockApiResponse = await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({ id: 1, email, name: 'New User' });
-        }, 1000);
-      });
-
-      // Dispatch the setUser action with the user data
-      dispatch(setUser(mockApiResponse));
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      setError('Failed to sign up. Please try again.');
-    }
-  };
+  const [fullName, setFullName] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   return (
     <Container>
-      <form onSubmit={handleSubmit} className='flex flex-col items-center'>
+      <form className='w-full max-w-md mx-auto bg-slate-800 p-8 rounded-lg shadow-lg'>
+        <h2 className='text-2xl font-bold text-white text-center mb-6'>Sign Up</h2>
+
+        <Input
+          type='text'
+          name='fullName'
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          placeholder='Full Name'
+          className='mb-4 w-full'
+        />
         <Input
           type='email'
           name='email'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder='Email'
-          className='mb-2'
+          className='mb-4 w-full'
         />
         <Input
           type='password'
@@ -49,15 +36,23 @@ function SignUpForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder='Password'
-          className='mb-2'
+          className='mb-4 w-full'
         />
+        <Input
+          type='password'
+          name='confirmPassword'
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          placeholder='Confirm Password'
+          className='mb-4 w-full'
+        />
+
         <Button
           type='submit'
-          disabled={loading}
-          name={loading ? 'Loading...' : 'Sign Up'}
-          className='mb-2'
+          // disabled={loading}
+          label={'Sign Up'}
+          className='w-full bg-green-500 hover:bg-green-600 disabled:opacity-50'
         />
-        {error && <p className='text-red-500'>{error}</p>}
       </form>
     </Container>
   );

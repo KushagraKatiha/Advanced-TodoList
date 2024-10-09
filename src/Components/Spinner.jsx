@@ -1,8 +1,10 @@
 import React from 'react';
 
-function Spinner() {
+function Spinner({ size = '8', color = 'border-blue-500' }) {
   return (
-    <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full"></div>
+    <div
+      className={`animate-spin inline-block w-${size} h-${size} border-4 border-t-transparent ${color} rounded-full`}
+    ></div>
   );
 }
 

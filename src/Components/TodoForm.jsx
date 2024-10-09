@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Input, Container } from './index';
-import { useAddTodoMutation } from '../store/todoApiSlice';
 
-function TodoForm() {
+function TodoForm({ addTodo, isLoading }) {
     const [todo, setTodo] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(''); // State to show success message
-    const [addTodo, { isLoading }] = useAddTodoMutation(); // RTK Query hook for adding a todo
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,24 +34,25 @@ function TodoForm() {
 
     return (
         <Container>
-            <form onSubmit={handleSubmit} className='flex flex-col items-center'>
+            <form onSubmit={handleSubmit} className='w-full max-w-lg bg-slate-800 p-6 rounded-lg shadow-md'>
+                <h2 className='text-2xl font-bold text-white text-center mb-4'>Add New Todo</h2>
                 <Input
                     type='text'
                     name='todo'
                     value={todo}
                     onChange={(e) => setTodo(e.target.value)}
                     placeholder='Enter your todo'
-                    className='mb-2'
+                    className='mb-4 w-full'
                 />
                 <Button
                     type='submit'
                     disabled={isLoading}
-                    name={isLoading ? 'Loading...' : 'Add Todo'}
-                    className='mb-2'
+                    label={isLoading ? 'Loading...' : 'Add Todo'}
+                    className='w-full bg-blue-500 hover:bg-blue-600 disabled:opacity-50'
                 />
                 {/* Display error or success messages */}
-                {error && <p className='text-red-500'>{error}</p>}
-                {success && <p className='text-green-500'>{success}</p>}
+                {error && <p className='text-red-500 mt-2 text-center'>{error}</p>}
+                {success && <p className='text-green-500 mt-2 text-center'>{success}</p>}
             </form>
         </Container>
     );

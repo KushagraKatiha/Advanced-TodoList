@@ -1,8 +1,15 @@
 import React from 'react'
 
-function Input({ type, placeholder, value, onChange, className, ...props}) {
+function Input({ type = 'text', placeholder, value, onChange, className, ...props }) {
   return (
-    <input className={`${className} bg-slate-900 text-white rounded-md`} type={type} placeholder={placeholder} value={value} onChange={onChange} {...props}/>
+    <input
+      type={type}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      className={`w-full px-4 py-2 text-white bg-slate-900 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-slate-800 transition duration-200 ease-in-out ${className}`}
+      {...props}
+    />
   )
 }
 

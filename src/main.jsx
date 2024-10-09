@@ -3,9 +3,8 @@ import { Provider } from 'react-redux';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import store from './store/store.js';
 import App from './App.jsx';
-import HomePage from './Pages/HomePage';
-import CreateTodo from './Pages/CreateTodo.jsx';
-import ShowTodo from './Pages/ShowTodo.jsx';
+import {HomePage, CreateTodo, ShowTodo, SignUp, SignIn} from './Pages/pages.js';
+import './index.css'
 
 // Define the router with nested routes
 const router = createBrowserRouter([
@@ -25,6 +24,14 @@ const router = createBrowserRouter([
         path: '/todos', // Show Todos page route
         element: <ShowTodo />,
       },
+      {
+        path: '/signup',
+        element: <SignUp />,
+      },
+      {
+        path: '/signin',
+        element: <SignIn />,
+      }
     ],
   },
 ]);
