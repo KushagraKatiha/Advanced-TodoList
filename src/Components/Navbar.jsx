@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from './index';
-import { logout } from '../store/userAuthSilce'; 
+import { logout } from '../store/userAuthSilce';
 import { useNavigate } from 'react-router-dom';
 
 function Navbar() {
@@ -20,12 +20,15 @@ function Navbar() {
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex space-x-4">
           <Button onClick={() => navigate('/')} label="Home" className="bg-blue-500 hover:bg-blue-600" />
-          <Button label="About" className="bg-blue-500 hover:bg-blue-600" />
-          <Button label="Contact" className="bg-blue-500 hover:bg-blue-600" />
+          <Button onClick={() => navigate('/about')} label="About" className="bg-blue-500 hover:bg-blue-600" />
+          <Button onClick={() => navigate('/contact')} label="Contact" className="bg-blue-500 hover:bg-blue-600" />
         </div>
         <div>
           {user ? (
-            <Button label="Logout" className="bg-red-500 hover:bg-red-600" onClick={handleLogout} />
+            <div>
+              <Button label="Logout" className="bg-red-500 hover:bg-red-600 mr-2" onClick={handleLogout} />
+              <Button label="Profile" className="bg-green-500 hover:bg-green-600 ml-2" onClick={()=>navigate('/profile')} />
+            </div>
           ) : (
             <Button onClick={() => navigate('/signin')} label="Login" className="bg-green-500 hover:bg-green-600" />
           )}

@@ -8,8 +8,16 @@ import Navbar from "./Navbar";
 import Container from "./Container";
 import Spinner from "./Spinner";
 import TodoLogo from "./Logo/Logo";
+import NotLoggedIn from "./NotLoggedIn";
+import PageNotFound from "./PageNotFound";
+import TodosNotFound from "./TodosNotFound";
+import ChangePassword from "./ChangePassword";
 
 export { 
+    ChangePassword,
+    TodosNotFound,
+    PageNotFound,
+    NotLoggedIn,
     Button, 
     Input, 
     SignUpForm, 

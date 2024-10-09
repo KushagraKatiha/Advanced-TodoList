@@ -3,10 +3,10 @@ import { Provider } from 'react-redux';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import store from './store/store.js';
 import App from './App.jsx';
-import {HomePage, CreateTodo, ShowTodo, SignUp, SignIn} from './Pages/pages.js';
-import './index.css'
+import { HomePage, CreateTodo, ShowTodo, SignUp, SignIn, Contact, About, UserProfile } from './Pages/pages.js';
+import {PageNotFound} from './Components/index.js';
+import './index.css';
 
-// Define the router with nested routes
 const router = createBrowserRouter([
   {
     path: '/',
@@ -17,21 +17,37 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: '/create-todo', // Create Todo page route
+        path: 'create-todo', // Create Todo page route
         element: <CreateTodo />,
       },
       {
-        path: '/todos', // Show Todos page route
+        path: 'todos', // Show Todos page route
         element: <ShowTodo />,
       },
       {
-        path: '/signup',
+        path: 'signup', // SignUp page route
         element: <SignUp />,
       },
       {
-        path: '/signin',
+        path: 'signin', // SignIn page route
         element: <SignIn />,
-      }
+      },
+      {
+        path: 'contact',
+        element: <Contact />,
+      },
+      {
+        path: 'about',
+        element: <About />,
+      },
+      {
+        path: '/profile',
+        element: <UserProfile />,
+      },
+      {
+        path: '*', // Catch-all route for 404
+        element: <PageNotFound />, // Handle 404 page
+      },
     ],
   },
 ]);

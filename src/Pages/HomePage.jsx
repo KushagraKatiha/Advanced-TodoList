@@ -26,13 +26,13 @@ function HomePage() {
           <Link to="/todos" aria-label="View Todos">
             <Button 
               label="View Todos" 
-              className="bg-white text-indigo-800 hover:bg-indigo-600 hover:text-white transition duration-300 transform hover:scale-105 shadow-lg px-6 py-3 rounded-full" 
+              className="text-[#4f46e6] bg-white hover:bg-indigo-600 hover:text-white transition duration-300 transform hover:scale-105 shadow-lg px-6 py-3 rounded-full" 
             />
           </Link>
           <Link to="/create-todo" aria-label="Create New Todo">
             <Button 
               label="Create New Todo" 
-              className="bg-white text-purple-800 hover:bg-purple-600 hover:text-white transition duration-300 transform hover:scale-105 shadow-lg px-6 py-3 rounded-full" 
+              className="bg-white text-[#9333eb] hover:bg-purple-600 hover:text-white transition duration-300 transform hover:scale-105 shadow-lg px-6 py-3 rounded-full" 
             />
           </Link>
         </div>
