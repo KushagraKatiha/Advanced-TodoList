@@ -1,9 +1,40 @@
 import React, { useState } from 'react';
 import { Button, Input, Container } from './index';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function SignInForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [err, setErr] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const login = () => {
+    try {
+      setLoading(true);
+      const response = axios.post('api/user/login', { email, password })
+      if(response.status === 200) {
+        navigate('/todos');
+      }
+    } catch (error) {
+      setErr('An error occurred');
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if(!email || !password) {
+      setErr('Please fill in all fields');
+      return;
+    }else{
+      setErr('');
+      login();
+    }
+  }
 
   return (
     <Container>
@@ -27,9 +58,13 @@ function SignInForm() {
           className='mb-4 w-full'
         />
 
+        {err && <p className='text-red-500 mt-2 text-center'>{err}</p>}
+
         <Button
           type='submit'
-          label={'Sign In'}
+          disabled = {loading}
+          onClick={handleSubmit}
+          label={loading ? 'Loading...' : 'Sign In'}
           className='w-full bg-blue-500 hover:bg-blue-600 disabled:opacity-50'
         />
       </form>

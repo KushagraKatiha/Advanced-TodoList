@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { Button, Input, Container } from './index';
+import { useDispatch } from 'react-redux';
+import {addTodo} from '../store/todoSlice'
+import { nanoid } from '@reduxjs/toolkit';
 
-function TodoForm({ addTodo, isLoading }) {
+function TodoForm() {
     const [todo, setTodo] = useState('');
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState(''); // State to show success message
+    const [success, setSuccess] = useState(''); 
+
+    const dispatch = useDispatch();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -16,20 +21,14 @@ function TodoForm({ addTodo, isLoading }) {
         setSuccess(''); // Reset success message
 
         const newTodo = {
+            id: nanoid(),
             title: todo,
             completed: false,
             createdBy: 'user',
             createdAt: new Date().toISOString(),
         };
 
-        try {
-            // Call the addTodo mutation to add the new todo
-            await addTodo(newTodo).unwrap();
-            setTodo(''); // Clear the input after successful addition
-            setSuccess('Todo added successfully!'); // Set success message
-        } catch (err) {
-            setError('Failed to add todo. Please try again.');
-        }
+        dispatch(addTodo(newTodo));
     };
 
     return (
@@ -46,8 +45,7 @@ function TodoForm({ addTodo, isLoading }) {
                 />
                 <Button
                     type='submit'
-                    disabled={isLoading}
-                    label={isLoading ? 'Loading...' : 'Add Todo'}
+                    label={'Add Todo'}
                     className='w-full bg-blue-500 hover:bg-blue-600 disabled:opacity-50'
                 />
                 {/* Display error or success messages */}

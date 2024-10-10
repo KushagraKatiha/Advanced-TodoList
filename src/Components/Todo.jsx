@@ -1,28 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from './index';
+import { deleteTodo, toggleComplete } from '../store/todoSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-function Todo({ id, title, createdAt, initialDone }) {
+function Todo({ id, title, createdAt, initialDone, key }) {
   const [done, setDone] = useState(initialDone);
-  const [error, setError] = useState('');
+
+  const dispatch = useDispatch();
+  const todos = useSelector(state => state.todo)
+
+  useEffect(()=>{
+    console.log(todos);
+  }, [todos])
 
   const handleToggle = async () => {
     try {
-      // Toggle the local state optimistically
       const newDoneStatus = !done;
       setDone(newDoneStatus);
-      setError(''); // Clear any previous error message
-
-      // Simulate an API call to update the todo status
-      // await updateTodoStatus(id, newDoneStatus);
+      dispatch(toggleComplete(id));
 
     } catch (err) {
       console.error('Failed to update todo:', err);
-      setError('Failed to update the status. Please try again.');
-
-      // Roll back the optimistic update if the API call fails
       setDone((prev) => !prev);
+      dispatch(toggleComplete(id));
     }
   };
+
+  const handleDelete = async () => {
+    try {
+      console.log('clicked');
+      
+      dispatch(deleteTodo(id));
+    } catch (err) {
+      console.error('Failed to delete todo:', err);
+    }
+  }
 
   return (
     <div className='flex w-full items-center justify-between bg-slate-800 px-4 py-2 rounded-lg shadow-lg mb-4'>
@@ -38,13 +50,17 @@ function Todo({ id, title, createdAt, initialDone }) {
 
       {/* Button to toggle status */}
       <Button
-        label={done ? 'Mark as Pending' : 'Mark as Done'}
+        label={done ? 'Pending' : 'Done'}
         className={`ml-4 ${done ? 'bg-yellow-500' : 'bg-green-500'}`}
         onClick={handleToggle}
       />
 
-      {/* Error message display */}
-      {error && <p className="text-red-500 mt-2">{error}</p>}
+      <Button
+        label={'Delete'}
+        variant='danger'
+        onClick={handleDelete}
+        className={`ml-4`}
+      />
     </div>
   );
 }

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { Container, Todo, TodosNotFound, NotLoggedIn } from '../Components/index';
+import { Container, NotLoggedIn, PreviewNotFound, TodoPreview } from '../Components/index';
 import { useSelector } from 'react-redux';
 
-function ShowTodo() {
+export default function TodoPreviewPage() {
   const user = useSelector((state) => state.userAuth.user);
   const todos = useSelector((state) => state.todo);
   
@@ -16,7 +16,7 @@ function ShowTodo() {
         <div className="space-y-4">
           {todos.map((todo) => (
             <div key={todo.id}>
-              <Todo
+              <TodoPreview
                 id={todo.id}
                 title={todo.title}
                 createdAt={todo.createdAt}
@@ -27,7 +27,7 @@ function ShowTodo() {
           ))}
         </div>
       ) : (
-        <TodosNotFound />
+        <PreviewNotFound />
       )}
     </Container>
   ) : (
@@ -37,4 +37,3 @@ function ShowTodo() {
   );
 }
 
-export default ShowTodo;

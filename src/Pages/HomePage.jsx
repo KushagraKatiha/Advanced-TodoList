@@ -1,8 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button, Container, TodoLogo } from '../Components/index';
 
 function HomePage() {
+  const navigate = useNavigate();
   return (
     <div className="home-page min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600">
       <Container className="text-center">
@@ -23,18 +24,18 @@ function HomePage() {
 
         {/* Buttons to navigate to Todo and CreateTodo pages */}
         <div className="flex justify-center space-x-4">
-          <Link to="/todos" aria-label="View Todos">
-            <Button 
-              label="View Todos" 
-              className="text-[#4f46e6] bg-white hover:bg-indigo-600 hover:text-white transition duration-300 transform hover:scale-105 shadow-lg px-6 py-3 rounded-full" 
-            />
-          </Link>
-          <Link to="/create-todo" aria-label="Create New Todo">
-            <Button 
-              label="Create New Todo" 
-              className="bg-white text-[#9333eb] hover:bg-purple-600 hover:text-white transition duration-300 transform hover:scale-105 shadow-lg px-6 py-3 rounded-full" 
-            />
-          </Link>
+
+          <Button
+            onClick={() => navigate('/todos')}
+            label="View Todos"
+            className="text-[#4f46ee] bg-white hover:bg-indigo-600 hover:text-white transition duration-300 transform hover:scale-105 shadow-lg px-6 py-3 rounded-full"
+          />
+
+          <Button
+            onClick={() => navigate('/create-todo')}
+            label="Create New Todo"
+            className="bg-white text-[#9333ee] hover:bg-purple-600 hover:text-white transition duration-300 transform hover:scale-105 shadow-lg px-6 py-3 rounded-full"
+          />
         </div>
       </Container>
     </div>

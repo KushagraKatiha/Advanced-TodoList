@@ -1,9 +1,11 @@
 import React from 'react';
-import { Container, TodoForm, NotLoggedIn } from '../Components/index';
+import { Container, TodoForm, NotLoggedIn, PreviewNotFound } from '../Components/index';
 import { useSelector } from 'react-redux';
+import TodoPreviewPage from './TodoPreviewPage';
 
 function CreateTodo() {
-  const user = useSelector(state => state.userSlice)
+  const user = useSelector(state => state.userAuth.user);
+  
   return user ? (
     <Container>
       {/* Heading */}
@@ -14,6 +16,7 @@ function CreateTodo() {
       {/* Render the TodoForm component */}
       <div className="flex justify-center">
         <TodoForm />
+        <TodoPreviewPage/>
       </div>
     </Container>
   ):(

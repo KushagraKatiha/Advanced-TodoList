@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import store from './store/store.js';
 import App from './App.jsx';
 import { HomePage, CreateTodo, ShowTodo, SignUp, SignIn, Contact, About, UserProfile } from './Pages/pages.js';
-import {PageNotFound} from './Components/index.js';
+import {PageNotFound, Spinner} from './Components/index.js';
 import './index.css';
 
 const router = createBrowserRouter([
@@ -48,6 +48,10 @@ const router = createBrowserRouter([
         path: '*', // Catch-all route for 404
         element: <PageNotFound />, // Handle 404 page
       },
+      {
+        path: 'spin',
+        element: <Spinner />,
+      }
     ],
   },
 ]);

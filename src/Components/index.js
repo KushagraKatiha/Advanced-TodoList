@@ -12,8 +12,12 @@ import NotLoggedIn from "./NotLoggedIn";
 import PageNotFound from "./PageNotFound";
 import TodosNotFound from "./TodosNotFound";
 import ChangePassword from "./ChangePassword";
+import TodoPreview from "./TodoPreview";
+import PreviewNotFound from "./PreviewNotFound"
 
 export { 
+    PreviewNotFound,
+    TodoPreview,
     ChangePassword,
     TodosNotFound,
     PageNotFound,

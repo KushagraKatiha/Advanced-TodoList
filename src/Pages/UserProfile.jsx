@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Input, Container, NotLoggedIn, ChangePassword } from '../Components/index';
 import { useSelector } from 'react-redux';
+import axios from 'axios'; 
 
 function UserProfile() {
     const user = useSelector((state) => state.userAuth);
@@ -9,9 +10,11 @@ function UserProfile() {
     const [userData, setUserData] = useState({
         name: 'John Doe',
         email: 'john.doe@example.com',
-        password: 'password123'
+        profilePicture: '/default-profile.png', 
     });
-    const [message, setMessage] = useState({ text: '', type: '' }); // State for messages
+    const [profilePicture, setProfilePicture] = useState(userData.profilePicture);
+    const [message, setMessage] = useState({ text: '', type: '' });
+    const [uploading, setUploading] = useState(false); // State for showing loading during upload
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -23,13 +26,11 @@ function UserProfile() {
 
     const handleEdit = () => {
         setIsEditing(true);
-        setMessage({ text: '', type: '' }); // Clear any previous messages
+        setMessage({ text: '', type: '' }); // Clear previous messages
     };
 
     const handleSave = () => {
-        // Simulate saving user data
         if (userData.name && userData.email) {
-            // Example success condition
             console.log('User data saved:', userData);
             setMessage({ text: 'User data saved successfully!', type: 'success' });
             setIsEditing(false);
@@ -48,10 +49,68 @@ function UserProfile() {
         }
     };
 
+    const handleProfilePictureChange = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setUploading(true);
+            setMessage({ text: '', type: '' });
+
+            const formData = new FormData();
+            formData.append('profilePicture', file); // 'profilePicture' should match your backend multer setup
+
+            try {
+                // Assuming your backend API endpoint is '/api/upload/profile-picture'
+                const response = await axios.post('/api/upload/profile-picture', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+                const imageUrl = response.data.url; // Assuming the Cloudinary URL is returned in `url`
+                setProfilePicture(imageUrl); // Update state with the new image URL
+                setUserData((prevData) => ({
+                    ...prevData,
+                    profilePicture: imageUrl,
+                }));
+                setMessage({ text: 'Profile picture updated successfully!', type: 'success' });
+            } catch (error) {
+                setMessage({ text: 'Error uploading profile picture. Please try again.', type: 'error' });
+            } finally {
+                setUploading(false); // Stop the loader
+            }
+        }
+    };
+
     return user ? (
         <Container className="bg-gradient-to-r from-indigo-500 to-purple-600 flex flex-col items-center justify-center min-h-screen">
             <h1 className="text-3xl font-bold mb-4">User Profile</h1>
             <div className="w-full max-w-md space-y-4">
+                
+                {/* Display Profile Picture */}
+                <div className="flex flex-col items-center">
+                    <img
+                        src={profilePicture}
+                        alt="Profile"
+                        className="border-4 border-black w-32 h-32 rounded-full object-cover mb-4"
+                    />
+                    <Button
+                        label="Change Profile Picture"
+                        className="bg-gray-500 text-white hover:bg-gray-400"
+                        onClick={() => document.getElementById('profile-picture-input').click()}
+                    />
+                    {/* Hidden file input */}
+                    <Input
+                        id="profile-picture-input"
+                        type="file"
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        onChange={handleProfilePictureChange}
+                    />
+
+                    {/* Show loading state */}
+                    {uploading && <p className="text-white mt-2">Uploading...</p>}
+                </div>
+
                 <Input
                     type="text"
                     name="name"
