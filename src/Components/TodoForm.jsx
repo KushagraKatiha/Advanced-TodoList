@@ -34,7 +34,7 @@ function TodoForm() {
     return (
         <Container>
             <form onSubmit={handleSubmit} className='w-full max-w-lg bg-slate-800 p-6 rounded-lg shadow-md'>
-                <h2 className='text-2xl font-bold text-white text-center mb-4'>Add New Todo</h2>
+                <h2 className='text-2xl font-bold text-white text-center mb-4'>Add New Task</h2>
                 <Input
                     type='text'
                     name='todo'

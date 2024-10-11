@@ -28,13 +28,13 @@ function HomePage() {
           <Button
             onClick={() => navigate('/todos')}
             label="View Todos"
-            className="text-[#4f46ee] bg-white hover:bg-indigo-600 hover:text-white transition duration-300 transform hover:scale-105 shadow-lg px-6 py-3 rounded-full"
+            className="text-[#4f46ef] bg-white hover:bg-indigo-600 hover:text-white transition duration-300 transform hover:scale-105 shadow-lg px-6 py-3 rounded-full"
           />
 
           <Button
             onClick={() => navigate('/create-todo')}
             label="Create New Todo"
-            className="bg-white text-[#9333ee] hover:bg-purple-600 hover:text-white transition duration-300 transform hover:scale-105 shadow-lg px-6 py-3 rounded-full"
+            className="bg-white text-[#9333ef] hover:bg-purple-600 hover:text-white transition duration-300 transform hover:scale-105 shadow-lg px-6 py-3 rounded-full"
           />
         </div>
       </Container>

@@ -1,13 +1,32 @@
 import React, { useState } from 'react';
 import { Button, Input } from '../Components/index';
 import { Container } from './index';
+import axios from 'axios';
 
-function ChangePassword({ onPasswordChange }) {
+function ChangePassword() {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+
+    const onPasswordChange = (oldPass, newPass) => {
+        axios.post('http://localhost:5000/api/auth/change-password', {
+            oldPassword: oldPass,
+            newPassword: newPass
+        })
+        .then((res) => {
+            if(res.data.success) {
+                setSuccess('Password changed successfully!');
+            }else{
+                setError(res.data.message);
+            }
+        })
+        .catch((err) => {
+            setError('An error occurred. Please try again later.');
+            console.log(err.message);
+        });
+    }
 
     const handleChangePassword = (e) => {
         e.preventDefault();
@@ -26,7 +45,6 @@ function ChangePassword({ onPasswordChange }) {
 
         // Call the passed-in onPasswordChange function with the current and new passwords
         onPasswordChange(currentPassword, newPassword);
-        setSuccess('Password changed successfully!');
 
         // Reset fields
         setCurrentPassword('');

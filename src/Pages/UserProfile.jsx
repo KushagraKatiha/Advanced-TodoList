@@ -1,28 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Input, Container, NotLoggedIn, ChangePassword } from '../Components/index';
 import { useSelector } from 'react-redux';
-import axios from 'axios'; 
+import axios from 'axios';
 
 function UserProfile() {
     const user = useSelector((state) => state.userAuth);
+
     const [isEditing, setIsEditing] = useState(false);
     const [showChangePassword, setShowChangePassword] = useState(false);
-    const [userData, setUserData] = useState({
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-        profilePicture: '/default-profile.png', 
-    });
-    const [profilePicture, setProfilePicture] = useState(userData.profilePicture);
+    const [fullName, setFullName] = useState('');
+    const [email, setEmail] = useState('');
+    const [profilePicture, setProfilePicture] = useState('');
     const [message, setMessage] = useState({ text: '', type: '' });
     const [uploading, setUploading] = useState(false); // State for showing loading during upload
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUserData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
+    // Fetch user details from '/api/user/details
+
+    const handleFetchDetails = () => {
+        axios.get('/api/user/details')
+            .then((res) => {
+                setFullName(res.data.fullName)
+                setEmail(res.data.email)
+                setProfilePicture(res.data.img)
+            })
+            .catch((err) => {
+                setMessage({ text: 'An error occurred. Please try again later.', type: 'error' });
+                console.log(err.message);
+            });
+    }
+
+    // useEffect(() => {
+    //     handleFetchDetails()
+    // }, []);
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -30,23 +39,41 @@ function UserProfile() {
     };
 
     const handleSave = () => {
-        if (userData.name && userData.email) {
-            console.log('User data saved:', userData);
-            setMessage({ text: 'User data saved successfully!', type: 'success' });
-            setIsEditing(false);
-        } else {
-            setMessage({ text: 'Please fill in all fields.', type: 'error' });
-        }
+        setIsEditing(true)
+        axios.post('/api/user/update', {
+            name: fullName,
+            email,
+        })
+            .then((res) => {
+                if (res.status === 200) {
+                    setMessage({ text: 'Profile updated successfully!', type: 'success' });
+                }
+            })
+            .catch((err) => {
+                setMessage({ text: 'An error occurred. Please try again later.', type: 'error' });
+                console.log(err.message)
+            })
+            .finally(() => {
+                setIsEditing(false);
+            })
     };
 
     const handlePasswordChange = (currentPassword, newPassword) => {
-        if (newPassword.length < 6) {
-            setMessage({ text: 'New password must be at least 6 characters long.', type: 'error' });
-        } else {
-            console.log('Current Password:', currentPassword);
-            console.log('New Password:', newPassword);
-            setMessage({ text: 'Password changed successfully!', type: 'success' });
-        }
+        axios.post('/api/auth/change-password', {
+            oldPassword: currentPassword,
+            newPassword: newPassword,
+        })
+            .then((res) => {
+                if (res.data.success === 200) {
+                    setMessage({ text: 'Password changed successfully!', type: 'success' });
+                } else {
+                    setMessage({ text: res.data.message, type: 'error' });
+                }
+            })
+            .catch((err) => {
+                setMessage({ text: 'An error occurred. Please try again later.', type: 'error' });
+                console.log(err.message);
+            });
     };
 
     const handleProfilePictureChange = async (e) => {
@@ -85,7 +112,7 @@ function UserProfile() {
         <Container className="bg-gradient-to-r from-indigo-500 to-purple-600 flex flex-col items-center justify-center min-h-screen">
             <h1 className="text-3xl font-bold mb-4">User Profile</h1>
             <div className="w-full max-w-md space-y-4">
-                
+
                 {/* Display Profile Picture */}
                 <div className="flex flex-col items-center">
                     <img
@@ -114,20 +141,20 @@ function UserProfile() {
                 <Input
                     type="text"
                     name="name"
-                    value={userData.name}
-                    onChange={handleChange}
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
                     placeholder="Name"
                     className="mb-2"
-                    disabled={!isEditing}
+                    disabled={isEditing}
                 />
                 <Input
                     type="email"
                     name="email"
-                    value={userData.email}
-                    onChange={handleChange}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
                     className="mb-2"
-                    disabled={!isEditing}
+                    disabled={isEditing}
                 />
                 <div className="flex space-x-4">
                     {isEditing ? (
