@@ -29,7 +29,7 @@ function UserProfile() {
             });
     }
 
-    // useEffect(() => {
+    // useEffect(() => {  
     //     handleFetchDetails()
     // }, []);
 
